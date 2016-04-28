@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %} ITEM Shop {% endblock %}
+{% block content %}
+<table>
+	<thead>
+		<tr><td>id</td><td>name</td><td>price</td></tr>
+	</thead>
+	<tbody>
+	{% for item in items %}
+		<tr><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td></tr>
+	{% endfor %}
+	</tbody>
+</table>
+<form action="{% url 'cms:buy' %}" method="post">
+	{% csrf_token %}
+	<div id="ContainerQ1">
+		Who are you?
+		<select id="SelectUser" name="user">
+			<option >
+			{% for user in users %}
+			<option value="{{ user.student_id }}"> {{ user.name }} </option>
+			{% endfor %}
+		</select>
+	</div>
+	<div id="ContainerQ2">
+		<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
+		<input type="text" name="dummy" style="display:none;">
+		<input type="text" id="TxtJAN" name="item" /><br />
+		<select id="SelectValue" name="value">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>個
+		
+	</div>
+	<div id="ContainerPrice">
+		<p>Price:<span id="SpanPrice">---</span>Elis</p>
+	</div>
+	<input type="button" id="BtnBuy" value="BUY" style="display:none;" />
+</form>
+<script>
+	"use strict";
+	var itemPrice = [];
+	{% for item in items %}
+		itemPrice["{{ item.code }}"] = {{ item.selling_price }};
+	{% endfor %}
+	
+	var slcUser = document.getElementById('SelectUser');
+	var txtJan = document.getElementById('TxtJAN');
+	var spnPrice = document.getElementById('SpanPrice');
+	var btnBuy = document.getElementById('BtnBuy');
+	//　※あとでやる selectbox の状態によるBuyボタンの表示は制御されていない
+	txtJan.addEventListener('input',function(e){
+		if(txtJan.value in itemPrice){
+			spnPrice.innerText = itemPrice[txtJan.value];
+			btnBuy.style.display = 'block';						
+		}else{
+			spnPrice.innerText = "---";
+			btnBuy.style.display = 'none';
+		}
+	});
+</script>
+{% endblock %}
