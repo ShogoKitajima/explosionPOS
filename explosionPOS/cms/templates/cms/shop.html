@@ -4,24 +4,25 @@
 {% block content %}
 <table>
 	<thead>
-		<tr><td>id</td><td>name</td><td>price</td></tr>
+		<tr><td>id</td><td>name</td><td>price</td><td>stock</td></tr>
 	</thead>
 	<tbody>
 	{% for item in items %}
-		<tr><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td></tr>
+		<tr><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td><td>{{ item.stock }}</td></tr>
 	{% endfor %}
 	</tbody>
 </table>
-<form action="{% url 'cms:buy' %}" method="post">
+<form id="mainForm" action="{% url 'cms:buy' %}" method="post">
 	{% csrf_token %}
 	<div id="ContainerQ1">
 		Who are you?
 		<select id="SelectUser" name="user">
 			<option >
 			{% for user in users %}
-			<option value="{{ user.student_id }}"> {{ user.name }} </option>
+			<option value="{{ user.id }}"> {{ user.name }} </option>
 			{% endfor %}
 		</select>
+		<span id="SpanThismonthCost"></span>
 	</div>
 	<div id="ContainerQ2">
 		<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
@@ -44,14 +45,27 @@
 <script>
 	"use strict";
 	var itemPrice = [];
+	var itemStock = [];
 	{% for item in items %}
 		itemPrice["{{ item.code }}"] = {{ item.selling_price }};
+		itemStock["{{ item.stock }}"] = {{ item.stock }};
 	{% endfor %}
 	
 	var slcUser = document.getElementById('SelectUser');
 	var txtJan = document.getElementById('TxtJAN');
 	var spnPrice = document.getElementById('SpanPrice');
+	var spnThismonthcost = document.getElementById('SpanThismonthCost');
 	var btnBuy = document.getElementById('BtnBuy');
+	slcUser.addEventListener('change',function(e){
+		var r = new XMLHttpRequest(); 
+		r.open("GET", "userinfo/", true);
+		r.onreadystatechange = function () {
+		if (r.readyState != 4 || r.status != 200) return; 
+			console.log(r.responseText);
+		};
+		
+		r.send("user="+ slcUser.options[slcUser.selectedIndex].value	);
+	});
 	//　※あとでやる selectbox の状態によるBuyボタンの表示は制御されていない
 	txtJan.addEventListener('input',function(e){
 		if(txtJan.value in itemPrice){
@@ -61,6 +75,9 @@
 			spnPrice.innerText = "---";
 			btnBuy.style.display = 'none';
 		}
+	});
+	btnBuy.addEventListener('click',function(e){
+		document.getElementById('mainForm').submit();
 	});
 </script>
 {% endblock %}

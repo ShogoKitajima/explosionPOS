@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %} ITEM Shop {% endblock %}
+{% block content %}
+    {% if status %}
+        購入に成功しました。
+    {% else %}
+        購入に失敗しました。
+    {% endif %}
+{% endblock %}
