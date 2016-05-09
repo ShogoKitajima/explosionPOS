@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.db.models import Sum
 
 # Create your models here.
 class User(models.Model):

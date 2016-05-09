@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block title %} ITEM Shop {% endblock %}
+{% block extrahead %}
+<link href="{% static 'cms/shop.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
-<table>
+<table class="table-striped">
 	<thead>
 		<tr><td>id</td><td>name</td><td>price</td><td>stock</td></tr>
 	</thead>
 	<tbody>
 	{% for item in items %}
-		<tr><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td><td>{{ item.stock }}</td></tr>
+		<tr id="tblRowJan{{ item.code }}"><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td><td>{{ item.stock }}</td></tr>
 	{% endfor %}
 	</tbody>
 </table>
@@ -22,24 +25,22 @@
 			<option value="{{ user.id }}"> {{ user.name }} </option>
 			{% endfor %}
 		</select>
-		<span id="SpanThismonthCost"></span>
+		This month :<span id="SpanThismonthCost"></span> JPY.
 	</div>
 	<div id="ContainerQ2">
 		<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
 		<input type="text" name="dummy" style="display:none;">
 		<input type="text" id="TxtJAN" name="item" /><br />
+		<span id="SpanMsgQ2"></span>
+	</div>
+	<div id="ContainerQ3">
+		<div id="ContainerPrice">
+		<p>Price:@<span id="SpanPrice">---</span> x 
 		<select id="SelectValue" name="value">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-		</select>個
-		
+		</select> pcs
+		= Cost:<span id="SpanCost">---</span>JPY</p>
 	</div>
-	<div id="ContainerPrice">
-		<p>Price:<span id="SpanPrice">---</span>Elis</p>
-	</div>
+
 	<input type="button" id="BtnBuy" value="BUY" style="display:none;" />
 </form>
 <script>
@@ -48,36 +49,8 @@
 	var itemStock = [];
 	{% for item in items %}
 		itemPrice["{{ item.code }}"] = {{ item.selling_price }};
-		itemStock["{{ item.stock }}"] = {{ item.stock }};
-	{% endfor %}
-	
-	var slcUser = document.getElementById('SelectUser');
-	var txtJan = document.getElementById('TxtJAN');
-	var spnPrice = document.getElementById('SpanPrice');
-	var spnThismonthcost = document.getElementById('SpanThismonthCost');
-	var btnBuy = document.getElementById('BtnBuy');
-	slcUser.addEventListener('change',function(e){
-		var r = new XMLHttpRequest(); 
-		r.open("GET", "userinfo/", true);
-		r.onreadystatechange = function () {
-		if (r.readyState != 4 || r.status != 200) return; 
-			console.log(r.responseText);
-		};
-		
-		r.send("user="+ slcUser.options[slcUser.selectedIndex].value	);
-	});
-	//　※あとでやる selectbox の状態によるBuyボタンの表示は制御されていない
-	txtJan.addEventListener('input',function(e){
-		if(txtJan.value in itemPrice){
-			spnPrice.innerText = itemPrice[txtJan.value];
-			btnBuy.style.display = 'block';						
-		}else{
-			spnPrice.innerText = "---";
-			btnBuy.style.display = 'none';
-		}
-	});
-	btnBuy.addEventListener('click',function(e){
-		document.getElementById('mainForm').submit();
-	});
+		itemStock["{{ item.code }}"] = {{ item.stock }};
+	{% endfor %}	
 </script>
+<script src="{% static 'cms/shop.js' %}"></script>
 {% endblock %}

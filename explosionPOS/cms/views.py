@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from django.db.models import Sum
+from django.db.models import Sum, F, IntegerField
+from django.core import serializers
 from cms.models import User, Item, Sale
+import json
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -33,11 +35,18 @@ def buy(request):
     return render(request,'cms/result.html',context)
 
 def userInfo(request):
-    #http://blog.hirokiky.org/2013/02/19/aggregation_with_django.html
-    selected_user = get_object_or_404(User,id=request.POST['user'])
-    today = datetime.date.today()
+    user_id = request.GET['user']
+    if not user_id.isdecimal() :
+        user_id = -1
+    selected_user = get_object_or_404(User,pk=user_id)
+    today = datetime.datetime.today()
     first_of_thismonth = today + relativedelta(day=1)
-    sales_of_thismonth = Sale.objects.filter(date__range=(first_of_thismonth, today),user=selected_user)
-    subtotal = sales_of_thismonth.aggregation_with_django(Sum('price'))
-    response = json.dumps({'subtotal': subtotal})
-    return HttpResponse(response,mimetype="text/javascript")
+    sales_of_thismonth = Sale.objects.filter(date__range=(first_of_thismonth,today),user=selected_user)
+    subtotal = sales_of_thismonth.aggregate(s = Sum(F('price')*F('value'),output_field=IntegerField()))
+    subtotal['s'] = subtotal['s'] if subtotal['s'] is not None else 0
+    response = json.dumps({'subtotal': subtotal['s']})  
+    return HttpResponse(response,content_type="text/javascript")
+
+#def getItems(request):
+#    response = serializers.serialize("json",Item.objects.all().order_by("code"),fields=("code","name")) 
+#    return HttpResponse(response,content_type="text/javascript")
