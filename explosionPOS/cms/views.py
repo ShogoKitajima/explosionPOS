@@ -9,7 +9,6 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 
-# Create your views here.
 def shop(request):
     sale = Sale.objects.all().order_by('id')
     items = Item.objects.all().order_by('code')
