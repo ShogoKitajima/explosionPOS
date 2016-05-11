@@ -9,6 +9,25 @@ var btnBuy = document.getElementById('BtnBuy');
 var cntQ2 = document.getElementById('ContainerQ2');
 var msgQ2 = document.getElementById('SpanMsgQ2');
 var cntQ3 = document.getElementById('ContainerQ3');
+var sliderContainer = document.getElementById('product_slider');
+
+// slider animation
+
+var slider_animation = function(){
+	var width = $('.product_item').outerWidth(true);
+	$('.product_item').animate({
+		left: -width
+	},
+	{
+		duration: 3000,
+		queue: true,
+	}).promise().done(function(){
+		$('.product_item').css('left',0);
+		sliderContainer.appendChild(sliderContainer.children[0]);
+	}).done(slider_animation);
+};
+slider_animation();
+
 slcUser.addEventListener('change',function(e){
 	var r = new XMLHttpRequest(); 
 	r.open("GET", "../userinfo/?user=" + slcUser.options[slcUser.selectedIndex].value, true);

@@ -5,44 +5,51 @@
 <link href="{% static 'cms/shop.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<table class="table-striped">
-	<thead>
-		<tr><td>id</td><td>name</td><td>price</td><td>stock</td></tr>
-	</thead>
-	<tbody>
+<ul id="product_slider">
 	{% for item in items %}
-		<tr id="tblRowJan{{ item.code }}"><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td><td>{{ item.stock }}</td><td><img src="{{ item.image.url }}" /></td></tr>
+	<li class="product_item" id="pi-Jan{{ item.code }}">
+		<div class="pi_image_div">
+			<img class="pi_image_img" src="{{ item.image.url }}" alt=" image of {{ item.name }}" />
+		</div>
+		<div class="pi_label">
+			<span class="pi_code">JAN:{{ item.code }}</span><br />
+			<span class="pi_name">{{ item.name }}</span><br />
+			<span class="pi_price">￥{{ item.selling_price }}-</span> <span class="pi_stock">{{ item.stock }} pcs.</span>
+		</div>
+	</li>
 	{% endfor %}
-	</tbody>
-</table>
-<form id="mainForm" action="{% url 'cms:buy' %}" method="post">
-	{% csrf_token %}
-	<div id="ContainerQ1">
-		Who are you?
-		<select id="SelectUser" name="user">
-			<option >
-			{% for user in users %}
-			<option value="{{ user.id }}"> {{ user.name }} </option>
-			{% endfor %}
-		</select>
-		This month :<span id="SpanThismonthCost"></span> JPY.
-	</div>
-	<div id="ContainerQ2">
-		<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
-		<input type="text" name="dummy" style="display:none;">
-		<input type="text" id="TxtJAN" name="item" /><br />
-		<span id="SpanMsgQ2"></span>
-	</div>
-	<div id="ContainerQ3">
-		<div id="ContainerPrice">
-		<p>Price:@<span id="SpanPrice">---</span> x 
-		<select id="SelectValue" name="value">
-		</select> pcs
-		= Cost:<span id="SpanCost">---</span>JPY</p>
-	</div>
+</ul>
+<div class="container">
+	<form id="mainForm" action="{% url 'cms:buy' %}" method="post">
+		{% csrf_token %}
+		<div id="ContainerQ1">
+			Who are you?
+			<select id="SelectUser" name="user">
+				<option value="">Choose</option>
+				{% for user in users %}
+				<option value="{{ user.id }}"> {{ user.name }} </option>
+				{% endfor %}
+			</select>
+			This month :<span id="SpanThismonthCost"></span> JPY.
+		</div>
+		<div id="ContainerQ2">
+			<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
+			<input type="text" name="dummy" style="display:none;">
+			<input type="text" id="TxtJAN" name="item" /><br />
+			<span id="SpanMsgQ2"></span>
+		</div>
+		<div id="ContainerQ3">
+			<div id="ContainerPrice">
+			<p>Price:@<span id="SpanPrice">---</span> x 
+			<select id="SelectValue" name="value">
+			</select> pcs
+			= Cost:<span id="SpanCost">---</span>JPY</p>
+			</div>
+		</div>
 
-	<input type="button" id="BtnBuy" value="BUY" style="display:none;" />
-</form>
+		<input type="button" id="BtnBuy" value="BUY" style="display:none;" />
+	</form>
+</div>
 <script>
 	"use strict";
 	var itemPrice = [];
