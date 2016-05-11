@@ -18,6 +18,7 @@ class Item(models.Model):
     cost_price = models.IntegerField('Cost price', blank=False, default=0)
     selling_price = models.IntegerField('Selling price', blank=False, default=0)
     stock = models.IntegerField('Stock',blank=False,default=0)
+    image = models.ImageField(upload_to='images/',default='noimage.jpg')
 
     def __str__(self):
         return self.name

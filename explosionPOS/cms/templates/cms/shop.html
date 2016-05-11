@@ -11,7 +11,7 @@
 	</thead>
 	<tbody>
 	{% for item in items %}
-		<tr id="tblRowJan{{ item.code }}"><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td><td>{{ item.stock }}</td></tr>
+		<tr id="tblRowJan{{ item.code }}"><td>{{ item.code }}</td><td>{{ item.name }}</td><td>{{ item.selling_price }}</td><td>{{ item.stock }}</td><td><img src="{{ item.image.url }}" /></td></tr>
 	{% endfor %}
 	</tbody>
 </table>
