@@ -1,0 +1,26 @@
+{% extends 'admin/change_form.html' %}
+
+{% block admin_change_form_document_ready %}
+
+{{ block.super }}
+
+<script>
+
+(function($) {
+	
+	var loop = function(){
+		$.getJSON("http://localhost:10080/?callback=?",{},
+			function(data,status){
+				if(data.student_info!=null){
+					$("#id_student_id").val(data.student_info.number);
+					$("#id_name").val(data.student_info.name);
+				}
+				setTimeout(loop,3000);
+			}
+		);
+	};
+	loop();
+
+})(django.jQuery);
+</script>
+{% endblock %}

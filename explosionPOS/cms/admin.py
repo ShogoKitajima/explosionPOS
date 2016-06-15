@@ -9,6 +9,7 @@ class ItemAdmin(admin.ModelAdmin):
         my_urls = [
             url(r'^addauto/$', self.admin_site.admin_view(self.addauto), name='addauto'),
         ]
+        # admin/cms/item/addauto/
         return my_urls + urls
 
     def addauto(self, request):
