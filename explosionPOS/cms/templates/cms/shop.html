@@ -23,14 +23,18 @@
 	<form id="mainForm" action="{% url 'cms:buy' %}" method="post">
 		{% csrf_token %}
 		<div id="ContainerQ1">
-			Who are you?
-			<select id="SelectUser" name="user">
-				<option value="">Choose</option>
-				{% for user in users %}
-				<option value="{{ user.id }}"> {{ user.name }} </option>
-				{% endfor %}
-			</select>
-			This month :<span id="SpanThismonthCost"></span> JPY.
+			Who are you? Touch your card or use guest account.<br />
+
+
+			<table id="userInfo">
+				<tbody>
+					<tr><td>ID</td><td id="userinfo_student_id"></td></tr>
+					<tr><td>Name</td><td id="userinfo_name"></td></tr>
+					<tr><td>LastMonth</td><td id="userinfo_LastmonthCost"></td></tr>
+					<tr><td>ThisMonth</td><td id="userinfo_ThismonthCost"></td></tr>
+				</tbody>
+			</table>
+
 		</div>
 		<div id="ContainerQ2">
 			<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
@@ -54,10 +58,12 @@
 	"use strict";
 	var itemPrice = [];
 	var itemStock = [];
+	
 	{% for item in items %}
 		itemPrice["{{ item.code }}"] = {{ item.selling_price }};
 		itemStock["{{ item.code }}"] = {{ item.stock }};
 	{% endfor %}	
+
 </script>
 <script src="{% static 'cms/shop.js' %}"></script>
 {% endblock %}

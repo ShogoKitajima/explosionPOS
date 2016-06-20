@@ -1,5 +1,4 @@
 "use strict";
-var slcUser = document.getElementById('SelectUser');
 var slcValue = document.getElementById('SelectValue');
 var txtJan = document.getElementById('TxtJAN');
 var spnPrice = document.getElementById('SpanPrice');
@@ -28,26 +27,43 @@ var slider_animation = function(){
 };
 slider_animation();
 
-slcUser.addEventListener('change',function(e){
-	var r = new XMLHttpRequest(); 
-	r.open("GET", "../userinfo/?user=" + slcUser.options[slcUser.selectedIndex].value, true);
-	r.onreadystatechange = function () {
-		if (r.readyState != 4 || r.status != 200) return; 
-		var res = JSON.parse(r.responseText);
-		var subtotal = res['subtotal'];
-		if (isFinite(subtotal)){
-			//存在しないユーザに対しては値を返さない(undefined)。ユーザの存在確認も兼ねる。
-			spnThismonthcost.innerText = res['subtotal'];
-			cntQ2.style.display = "block";
-			cntQ3.style.display = "none";
-		}else{
-			spnThismonthcost.innerText = "---";
-			cntQ2.style.display = "none";
-			cntQ3.style.display = "none";
-		}
-	};		
-	r.send(null);
-});
+	var userinfoUpdate = function(){
+		console.log("send");
+		$.getJSON("http://localhost:10080/?callback=?",{},
+			function(data,status){
+				console.log("suc");
+				if(data.student_info!=null){
+					var student_id = data.student_info.number;
+					console.log(student_id);
+					$("#userinfo_student_id").val(student_id);
+					$("#userinfo_name").val(data.student_info.name);
+					var r = new XMLHttpRequest(); 
+					r.open("GET", "../userinfo/?user=" + student_id, true);
+					r.onreadystatechange = function () {
+						if (r.readyState != 4 || r.status != 200) return; 
+						var res = JSON.parse(r.responseText);
+						var subtotal = res['subtotal'];
+						if (isFinite(subtotal)){
+							//存在しないユーザに対しては値を返さない(undefined)。ユーザの存在確認も兼ねる。
+							spnThismonthcost.innerText = res['subtotal'];
+							cntQ2.style.display = "block";
+							cntQ3.style.display = "none";
+						}else{
+							spnThismonthcost.innerText = "---";
+							cntQ2.style.display = "none";
+							cntQ3.style.display = "none";
+						}
+					};		
+					r.send(null);
+					setTimeout(userinfoUpdate,12000);
+				}else{
+					setTimeout(userinfoUpdate,3000);
+				}
+			}
+		);
+	};
+	userinfoUpdate();
+
 var slcValueRemoveChildAll = function(){while (slcValue.firstChild) slcValue.removeChild(slcValue.firstChild);};
 var costUpdateValue = function(){
 	if(txtJan.value in itemPrice){
