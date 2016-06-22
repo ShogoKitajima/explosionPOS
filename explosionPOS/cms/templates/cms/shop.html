@@ -14,7 +14,7 @@
 		<div class="pi_label">
 			<span class="pi_code">JAN:{{ item.code }}</span><br />
 			<span class="pi_name">{{ item.name }}</span><br />
-			<span class="pi_price">￥{{ item.selling_price }}-</span> <span class="pi_stock">{{ item.stock }} pcs.</span>
+			<span class="pi_price">￥{{ item.selling_price }}-</span><br /> <span class="pi_stock">{{ item.stock }} pcs.</span>
 		</div>
 	</li>
 	{% endfor %}
@@ -27,6 +27,7 @@
 
 
 			<table id="userInfo">
+				<thead></thead>
 				<tbody>
 					<tr><td>ID</td><td id="userinfo_student_id"></td></tr>
 					<tr><td>Name</td><td id="userinfo_name"></td></tr>
@@ -56,14 +57,9 @@
 </div>
 <script>
 	"use strict";
-	var itemPrice = [];
-	var itemStock = [];
-	
-	{% for item in items %}
-		itemPrice["{{ item.code }}"] = {{ item.selling_price }};
-		itemStock["{{ item.code }}"] = {{ item.stock }};
-	{% endfor %}	
-
+	var items = {
+	{% for item in items %}	"{{ item.code }}": {name:"{{ item.name }}",price:{{ item.selling_price }},stock:{{ item.stock }},img:"{{ item.image.url }}"},
+	{% endfor %}};
 </script>
 <script src="{% static 'cms/shop.js' %}"></script>
 {% endblock %}

@@ -37,13 +37,9 @@ def userInfo(request):
     user_id = request.GET['user']
     if not user_id.isdecimal() :
         user_id = -1
-    selected_user = get_object_or_404(User,pk=user_id)
-    today = datetime.datetime.today()
-    first_of_thismonth = today + relativedelta(day=1)
-    sales_of_thismonth = Sale.objects.filter(date__range=(first_of_thismonth,today),user=selected_user)
-    subtotal = sales_of_thismonth.aggregate(s = Sum(F('price')*F('value'),output_field=IntegerField()))
-    subtotal['s'] = subtotal['s'] if subtotal['s'] is not None else 0
-    response = json.dumps({'subtotal': subtotal['s']})  
+    selected_user = get_object_or_404(User,student_id=user_id)
+    
+    response = json.dumps({'this_month': selected_user.subtotal_month(minus=0),'last_month':selected_user.subtotal_month(minus=1)})  
     return HttpResponse(response,content_type="text/javascript")
 
 #def getItems(request):
