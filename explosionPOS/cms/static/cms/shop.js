@@ -78,9 +78,9 @@ slider_animation();
 var slcValueRemoveChildAll = function(){while (slcValue.firstChild) slcValue.removeChild(slcValue.firstChild);};
 var costUpdateValue = function(){
 	if(txtJan.value in items){
-		spnCost.innerText = items[txtJan.value].price * slcValue.options[slcValue.selectedIndex].value;
+		spnCost.innerText ="￥" + items[txtJan.value].price * slcValue.options[slcValue.selectedIndex].value + "-";
 	}else{
-		spnCost.innerText = "---";
+		spnCost.innerText = "￥---";
 	}
 };
 txtJan.addEventListener('input',function(e){
@@ -126,3 +126,4 @@ slcValue.addEventListener('change',function(e){
 btnBuy.addEventListener('click',function(e){
 	document.getElementById('mainForm').submit();
 });
+
