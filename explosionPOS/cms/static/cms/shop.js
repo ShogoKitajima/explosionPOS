@@ -1,7 +1,6 @@
 "use strict";
 var slcValue = document.getElementById('SelectValue');
 var txtJan = document.getElementById('TxtJAN');
-var spnPrice = document.getElementById('SpanPrice');
 var spnCost = document.getElementById("SpanCost");
 var spnThismonthcost = document.getElementById('userinfo_ThismonthCost');
 var spnLastmonthcost = document.getElementById('userinfo_LastmonthCost');
@@ -10,6 +9,7 @@ var btnBuy = document.getElementById('BtnBuy');
 var cntQ2 = document.getElementById('ContainerQ2');
 var msgQ2 = document.getElementById('SpanMsgQ2');
 var cntQ3 = document.getElementById('ContainerQ3');
+var cntQ4 = document.getElementById('ContainerQ4');
 var sliderContainer = document.getElementById('product_slider');
 
 // slider animation
@@ -49,16 +49,18 @@ slider_animation();
 							var subtotal = res['this_month'];
 							if (isFinite(subtotal)){
 								//存在しないユーザに対しては値を返さない(undefined)。ユーザの存在確認も兼ねる。
-								spnThismonthcost.innerText = res['this_month'];
-								spnLastmonthcost.innerText = res['last_month'];
-								cntQ2.style.display = "block";
+								spnThismonthcost.innerText = "￥" + res['this_month'];
+								spnLastmonthcost.innerText = "￥" + res['last_month'];
+								cntQ2.style.display = "inline-block";
 								cntQ3.style.display = "none";
+								cntQ4.style.display = "none";
 								txtJan.focus();
 							}else{
 								spnThismonthcost.innerText = "---";
 								spnLastmonthcost.innerText = "---";
 								cntQ2.style.display = "none";
 								cntQ3.style.display = "none";
+								cntQ4.style.display = "none";
 							}
 						};	
 						r.send(null);	
@@ -90,7 +92,12 @@ txtJan.addEventListener('input',function(e){
 			return;
 		} 
 		msgQ2.innerText = "";
-		cntQ3.style.display = "block";
+		$("#PreviewQ2Img").attr("src",items[janVal].img);
+		$("#PreviewQ2JAN").text("JAN:"+janVal);
+		$("#PreviewQ2Name").text(items[janVal].name);
+		$("#PreviewQ2Price").text("￥"+items[janVal].price+"-");
+		cntQ3.style.display = "inline-block";
+		cntQ4.style.display = "inline-block";
 		var f = document.createDocumentFragment();
 		for(var i=1;i<=items[janVal].stock&&i<=10;++i){
 			var option = document.createElement('option');
@@ -100,12 +107,16 @@ txtJan.addEventListener('input',function(e){
 		}	
 		btnBuy.style.display = "block";
 		slcValue.appendChild(f);
-		spnPrice.innerText = items[janVal].price;
+		
 		costUpdateValue();
 	}else{
-		spnPrice.innerText = "---";
+		
 		msgQ2.innerText = "";
 		btnBuy.style.display = "none";
+		$("#PreviewQ2Img").attr("src",$("#PreviewQ2Img").attr("default"));
+		$("#PreviewQ2JAN").text("JAN:null");
+		$("#PreviewQ2Name").text("");
+		$("#PreviewQ2Price").text("￥---");
 		slcValueRemoveChildAll();
 	}
 });

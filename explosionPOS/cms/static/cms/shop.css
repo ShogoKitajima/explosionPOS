@@ -1,7 +1,14 @@
-
-
+.Q_box{
+	display: inline-block;
+	vertical-align: top;
+	margin : 8px;
+}
+#Q_box_container{
+	
+}
 #ContainerQ2, #ContainerQ3{
 	display: none;
+	
 }
 #product_slider{
 	width:100%;
@@ -54,4 +61,18 @@
 }
 #TxtJAN{
 	ime-mode : inactive;
+}
+
+#userInfo{
+	width:auto;
+}
+#userInfo tbody{
+	border: 1px solid #333;
+	
+}
+#userInfo td{
+	font-size: 1.5em;
+}
+#Q2pi{
+	width:80%;
 }

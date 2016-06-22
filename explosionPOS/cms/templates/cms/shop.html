@@ -20,40 +20,56 @@
 	{% endfor %}
 </ul>
 <div class="container">
-	<form id="mainForm" action="{% url 'cms:buy' %}" method="post">
-		{% csrf_token %}
-		<div id="ContainerQ1">
-			Who are you? Touch your card or use guest account.<br />
+	<div id="Q_box_container">
+		<form id="mainForm" action="{% url 'cms:buy' %}" method="post">
+			{% csrf_token %}
+			<div id="ContainerQ1" class="Q_box">
+				<h2>Step 1:Who? </h2>
+				Touch your card or use guest account.
+				<table id="userInfo">
 
-
-			<table id="userInfo">
-				<thead></thead>
-				<tbody>
-					<tr><td>ID</td><td id="userinfo_student_id"></td></tr>
-					<tr><td>Name</td><td id="userinfo_name"></td></tr>
-					<tr><td>LastMonth</td><td id="userinfo_LastmonthCost"></td></tr>
-					<tr><td>ThisMonth</td><td id="userinfo_ThismonthCost"></td></tr>
-				</tbody>
-			</table>
-
-		</div>
-		<div id="ContainerQ2">
-			<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
-			<input type="text" name="dummy" style="display:none;">
-			<input type="text" id="TxtJAN" name="item" /><br />
-			<span id="SpanMsgQ2"></span>
-		</div>
-		<div id="ContainerQ3">
-			<div id="ContainerPrice">
-			<p>Price:@<span id="SpanPrice">---</span> x 
-			<select id="SelectValue" name="value">
-			</select> pcs
-			= Cost:<span id="SpanCost">---</span>JPY</p>
+					<tbody>
+						<tr><th>ID</th><td id="userinfo_student_id"></td></tr>
+						<tr><th>Name</th><td id="userinfo_name"></td></tr>
+						<tr><th>LastMonth</th><td id="userinfo_LastmonthCost" class="JPY"></td></tr>
+						<tr><th>ThisMonth</th><td id="userinfo_ThismonthCost" class="JPY"></td></tr>
+					</tbody>
+				</table>
+				<input type="button" id="btnGuest" value="Log in as Guest" />
 			</div>
-		</div>
-
-		<input type="button" id="BtnBuy" value="BUY" style="display:none;" />
-	</form>
+			<div id="ContainerQ2" class="Q_box">
+				<h2>Step 2: What?</h2>
+				<!-- textBoxが一つの場合、Enter押下で即座に爆裂する -->
+				<input type="text" name="dummy" style="display:none;">
+				JAN CODE<input type="text" id="TxtJAN" name="item" /><br />
+				<span id="SpanMsgQ2"></span>
+				<div id="Q2pi" >
+					<div class="pi_image_div">
+						<img class="pi_image_img" id="PreviewQ2Img" src="{% static 'cms/noimage.jpg' %}" default="{% static 'cms/noimage.jpg' %}"  />
+					</div>
+					<div class="pi_label">
+						<span class="pi_code" id="PreviewQ2JAN"></span><br />
+						<span class="pi_name" id="PreviewQ2Name"></span><br />
+						<span class="pi_price" id="PreviewQ2Price"></span><br /> <span class="pi_stock"></span>
+					</div>
+				</div>
+			</div>
+			<div id="ContainerQ3" class="Q_box">
+				<h2>Step 3: How many?</h2>
+				<div id="ContainerPrice">
+				<p> 
+				<select id="SelectValue" name="value">
+				</select> pcs
+				</p>
+				</div>
+			</div>
+			<div id="ContainerQ4" class="Q_box">
+				<h2>Step 4: Buy. </h2>
+				<p><span class="pi_price" id="SpanCost">---</span>
+				<input type="button" id="BtnBuy" value="BUY" style="display:none;" />
+			</div>
+		</form>
+	</div>
 </div>
 <script>
 	"use strict";
