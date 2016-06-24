@@ -31,7 +31,7 @@ slider_animation();
 
 	var userinfoUpdate = function(){
 		console.log("send");
-		$.getJSON("http://localhost:10080/?callback=?",{},
+		$.getJSON("http://localhost:10080/?callback=?",{}).done(
 			function(data,status){
 				console.log("suc");
 				if(data.student_info!=null){
@@ -66,12 +66,11 @@ slider_animation();
 						r.send(null);	
 					}
 					
-					setTimeout(userinfoUpdate,12000);
-				}else{
-					setTimeout(userinfoUpdate,3000);
 				}
 			}
-		);
+		).always(function(){
+					setTimeout(userinfoUpdate,3000);
+		});
 	};
 	userinfoUpdate();
 
@@ -127,6 +126,6 @@ slcValue.addEventListener('change',function(e){
 btnBuy.addEventListener('click',function(e){
 	
 	$("#userinfo_student_id_form").val("12345678");
-	document.getElementById('mainForm').submit();
+//	document.getElementById('mainForm').submit();
 });
 
