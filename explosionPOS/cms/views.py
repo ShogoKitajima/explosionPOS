@@ -17,7 +17,7 @@ def shop(request):
     return render(request,'cms/shop.html',context)
 
 def buy(request):
-    selected_user = get_object_or_404(User,id=request.POST['user'])
+    selected_user = get_object_or_404(User,student_id=request.POST['user'])
     selected_item = get_object_or_404(Item,code=request.POST['item'])
     selected_value = int(request.POST['value'])
     selected_price = selected_item.selling_price

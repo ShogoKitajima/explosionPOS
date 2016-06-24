@@ -92,6 +92,7 @@ txtJan.addEventListener('input',function(e){
 			return;
 		} 
 		msgQ2.innerText = "";
+		console.log($("#userinfo_student_id").text());
 		$("#PreviewQ2Img").attr("src",items[janVal].img);
 		$("#PreviewQ2JAN").text("JAN:"+janVal);
 		$("#PreviewQ2Name").text(items[janVal].name);
@@ -124,6 +125,8 @@ slcValue.addEventListener('change',function(e){
 	costUpdateValue();
 });
 btnBuy.addEventListener('click',function(e){
+	
+	$("#userinfo_student_id_form").val("12345678");
 	document.getElementById('mainForm').submit();
 });
 

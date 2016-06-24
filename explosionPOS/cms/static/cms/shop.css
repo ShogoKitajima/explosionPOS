@@ -2,9 +2,12 @@
 	display: inline-block;
 	vertical-align: top;
 	margin : 8px;
+	background-color : #f9f6f9;
+	
+	padding:8px;
 }
 #Q_box_container{
-	
+	width:auto;
 }
 #ContainerQ2, #ContainerQ3{
 	display: none;
