@@ -39,7 +39,7 @@ def userInfo(request):
         user_id = -1
     selected_user = get_object_or_404(User,student_id=user_id)
     
-    response = json.dumps({'this_month': selected_user.subtotal_month(minus=0),'last_month':selected_user.subtotal_month(minus=1)})  
+    response = json.dumps({'name':selected_user.name,'this_month': selected_user.subtotal_month(minus=0),'last_month':selected_user.subtotal_month(minus=1)})  
     return HttpResponse(response,content_type="text/javascript")
 
 #def getItems(request):

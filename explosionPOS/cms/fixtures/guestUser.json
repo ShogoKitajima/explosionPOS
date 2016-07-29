@@ -1,0 +1,10 @@
+[
+  {
+    "model": "cms.User",
+    "pk": 1,
+    "fields": {
+      "student_id": 999,
+      "name": "Guest"
+    }
+  }
+]

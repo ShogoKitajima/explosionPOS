@@ -3,13 +3,26 @@
 {% block title %} Result {% endblock %}
 {% block extrahead %}
 <meta http-equiv="refresh" content="5;URL=../shop/">
+
+<link href="{% static 'cms/shop.css' %}" rel="stylesheet">
+
 {% endblock %}
 {% block content %}
     {% if status %}
-        <p>Success!</p>
-        <p>
-        {{ item.name }} @{{ price }}x{{ value }} = {% widthratio price 1 value %}
-        </p>
+        <p style="font: red 2em;">Success!</p>
+        
+        <div class="product_item" style="width:50%;">
+            <div class="pi_image_div">
+            <img class="pi_image_img" src="{{ item.image.url }}" alt=" image of {{ item.name }}" />
+            </div>
+            <div class="pi_label">
+            <span class="pi_code">JAN:{{ item.code }}</span><br />
+            <span class="pi_name">{{ item.name }}</span><br />
+            <span class="pi_price">￥{{ price }}x{{ value }} = ￥{% widthratio price 1 value %}-</span>
+            </div>
+        </div>
+
+        
     {% else %}
         <p>Failed.</p>
     {% endif %}
