@@ -15,22 +15,35 @@ var sliderContainer = document.getElementById('product_slider');
 // slider animation
 
 var slider_animation = function(){
-	console.log("sl");
+	
+	console.log("sl" );
 	var width = $('.product_item').outerWidth(true);
+	var elem_length = $(".product_item").length;
 	$('.product_item').each(function(i,elem){
 		$(elem).css("left",width*i);
 	});
-	$(".product_item").addClass("pi_trans_init");
-	$('.product_item').addClass("pi_trans").on('transitionend',function(){
+	
+	$('.product_item').addClass("pi_trans_init").addClass("pi_trans").on('transitionend',function(){
 		$(this).removeClass("pi_trans_init").removeClass("pi_trans");
-		if($(this).parent().children("li").eq(0).attr("id") == $(this).attr("id")){
+		if((--elem_length) == 0){
+			console.log(sliderContainer.children[0].id);
 			sliderContainer.appendChild(sliderContainer.children[0]);
 			slider_animation();
 		}
 	});
 };
-
-slider_animation();
+var slider_init = function(callback){
+	var elem_length = $(".product_item").length;
+	while($(".product_item").length <=5){
+		for(var i=0;i<elem_length;++i){
+			var t = $(".product_item").eq(i);
+			var c = t.clone(true).attr("id",t.attr("id")+"_c"+Math.random());
+			sliderContainer.appendChild(c.get(0));
+		}
+	}
+	callback();
+};
+slider_init(slider_animation);
 	var containerShow = function(i){
 			cntQ2.style.display = i>=2?"inline-block":"none";
 			cntQ3.style.display = i>=3?"inline-block":"none";

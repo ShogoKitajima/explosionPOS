@@ -21,7 +21,7 @@ srv.mount_proc("/") { |req, res|
   }
   info[:datetime] = datetime
   student_info = {
-    "number" => "12345678", 
+    "number" => "12345678"+rand(9).to_s, 
     "name" => "tomorinao"
   }
   begin

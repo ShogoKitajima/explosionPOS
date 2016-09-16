@@ -16,7 +16,7 @@
 	padding: 0px;
 	background:#fefefe;
 	/*↓なんかしらんけどこれがないとうごかない*/
-    opacity:0.99;
+	position:relative;
 	z-index: 10;
 }
 
