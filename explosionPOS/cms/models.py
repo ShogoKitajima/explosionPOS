@@ -20,7 +20,7 @@ class User(models.Model):
         selected_user = self
         today = datetime.datetime.today()
         first_of_lastmonth = today + relativedelta(day=1) - relativedelta(month=minus)
-        sales_of_lastmonth = Sale.objects.filter(date__range=(first_of_lastmonth,today),user=selected_user)
+        sales_of_lastmonth = Sale.objects.filter(date__range=(first_of_lastmonth,first_of_lastmonth+relativedelta(day=99)),user=selected_user)
         subtotal = sales_of_lastmonth.aggregate(s = Sum(F('price')*F('value'),output_field=IntegerField()))
         subtotal['s'] = subtotal['s'] if subtotal['s'] is not None else 0
         return subtotal['s'] 

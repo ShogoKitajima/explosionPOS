@@ -60,7 +60,8 @@ slider_init(slider_animation);
 			r.onreadystatechange = function () {
 				if (r.readyState != 4 || r.status != 200) return; 
 				var res = JSON.parse(r.responseText);
-				$("#userinfo_name").text(res["name"]);
+				var name = res["name"]==""?"----":res["name"];
+				$("#userinfo_name").text(name);
 				var subtotal = res['this_month'];
 				if (isFinite(subtotal)){
 					spnThismonthcost.innerText = "￥" + res['this_month'];

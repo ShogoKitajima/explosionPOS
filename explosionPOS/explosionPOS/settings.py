@@ -11,7 +11,18 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import socket
+import hashlib
 
+if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '74f639083ae5d5a889c3e20f25d13e79':
+    #Development Server Settings go here
+    DEBUG = True
+else:
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+    TEMPLATES_DEBUG = False
+
+    
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,10 +33,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qi+h-f49a8*@ou&++7l6g$(!fey^6nkrr3y%jed8ps*l9vgxi6'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS=['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -106,7 +115,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
+USE_TZ = False
 
 USE_I18N = True
 
