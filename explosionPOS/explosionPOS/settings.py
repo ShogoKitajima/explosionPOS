@@ -14,13 +14,6 @@ import os
 import socket
 import hashlib
 
-if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '74f639083ae5d5a889c3e20f25d13e79':
-    #Development Server Settings go here
-    DEBUG = True
-else:
-    # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = False
-    TEMPLATES_DEBUG = False
 
     
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -128,6 +121,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
+if hashlib.md5(socket.gethostname().encode('utf-8')).hexdigest() == '74f639083ae5d5a889c3e20f25d13e79':
+    #Development Server Settings go here
+    DEBUG = True
+    STATIC_URL = '/static/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+else:
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+    TEMPLATES_DEBUG = False
+    STATIC_URL = '/static/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, '../nginx/media')
+    MEDIA_URL = '/media/'

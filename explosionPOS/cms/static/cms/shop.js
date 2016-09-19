@@ -11,7 +11,15 @@ var msgQ2 = document.getElementById('SpanMsgQ2');
 var cntQ3 = document.getElementById('ContainerQ3');
 var cntQ4 = document.getElementById('ContainerQ4');
 var sliderContainer = document.getElementById('product_slider');
-
+var lastUserTime = new Date();
+var reload = function(){
+	var now = new Date();
+	if(now.getTime() - lastUserTime.getTime() > 1000*30*60){
+		location.reload();
+	}
+	return;
+};
+setInterval(reload,10000);
 // slider animation
 
 var slider_animation = function(){
@@ -44,6 +52,7 @@ var slider_init = function(callback){
 	callback();
 };
 slider_init(slider_animation);
+
 	var containerShow = function(i){
 			cntQ2.style.display = i>=2?"inline-block":"none";
 			cntQ3.style.display = i>=3?"inline-block":"none";
@@ -84,6 +93,7 @@ slider_init(slider_animation);
 				console.log("suc");
 				if(data.student_info!=null){
 					var student_id = data.student_info.number;
+					lastUserTime = new Date();
 					console.log(student_id);
 					userinfoUpdate(student_id);
 				}
@@ -93,6 +103,7 @@ slider_init(slider_animation);
 		});
 	};
 	userinfoGet();
+
 $("#btnUserinfoReset").on("click",function(){
 	console.log("a");
 	$("#userinfo_student_id").text("");
