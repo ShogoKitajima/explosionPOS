@@ -1,4 +1,4 @@
-"use strict";
+;"use strict";
 var slcValue = document.getElementById('SelectValue');
 var txtJan = document.getElementById('TxtJAN');
 var spnCost = document.getElementById("SpanCost");
@@ -20,39 +20,52 @@ var reload = function(){
 	return;
 };
 setInterval(reload,10000);
+//
 // slider animation
-
+//
 var slider_animation = function(){
-	
-	console.log("sl" );
-	var width = $('.product_item').outerWidth(true);
-	var elem_length = $(".product_item").length;
-	$('.product_item').each(function(i,elem){
-		$(elem).css("left",width*i);
-	});
-	
-	$('.product_item').addClass("pi_trans_init").addClass("pi_trans").on('transitionend',function(){
-		$(this).removeClass("pi_trans_init").removeClass("pi_trans");
-		if((--elem_length) == 0){
-			console.log(sliderContainer.children[0].id);
-			sliderContainer.appendChild(sliderContainer.children[0]);
-			slider_animation();
-		}
-	});
+	$('li.product_item').addClass("pi_trans_init").addClass("pi_trans");
 };
 var slider_init = function(callback){
-	var elem_length = $(".product_item").length;
-	while($(".product_item").length <=5){
+	while($("li.product_item").length <=5){
 		for(var i=0;i<elem_length;++i){
-			var t = $(".product_item").eq(i);
+			var t = $("li.product_item").eq(i);
 			var c = t.clone(true).attr("id",t.attr("id")+"_c"+Math.random());
 			sliderContainer.appendChild(c.get(0));
 		}
 	}
+	var width = $('li.product_item').outerWidth(true);
+	$('li.product_item').each(function(i,elem){
+		$(elem).css("left",width*i);
+	});
 	callback();
 };
-slider_init(slider_animation);
+var width = $('li.product_item').outerWidth(true);
+var elem_length = $("li.product_item").length;
+$(sliderContainer).on('transitionend','li.product_item',function(){
+	$(this).removeClass("pi_trans_init").removeClass("pi_trans");
+	if($(this).position().left == 0){
+		$(this).css("left",width*($("li.product_item").length-1));
+	}else{
+		$(this).css("left",$(this).position().left - width);
 
+	}
+	/*
+	if($(this).position().left > width * 7){
+		$(this).addClass("visibility_hidden");
+	}else{
+		$(this).removeClass("visibility_hidden");
+	}
+	*/
+	if((--elem_length) == 0){
+		elem_length = $("li.product_item").length;
+		slider_animation();
+	}
+});
+slider_init(slider_animation);
+//
+//EO slider_animation
+//
 	var containerShow = function(i){
 			cntQ2.style.display = i>=2?"inline-block":"none";
 			cntQ3.style.display = i>=3?"inline-block":"none";

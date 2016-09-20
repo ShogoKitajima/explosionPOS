@@ -19,7 +19,9 @@
 	position:relative;
 	z-index: 10;
 }
-
+.visibility_hidden{
+	visibility: hidden;
+}
 .product_item{
 	width:20%;
 	height:85%;
